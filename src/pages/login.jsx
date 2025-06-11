@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LoginSignupImg from '../assets/LoginSignupImg.png';
-import { LoginAPI } from '../services/authService.jsx';
+import { LoginAPI, GetCurrentUserAPI } from '../services/authService.jsx';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,12 +14,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   // Check if user is already logged in
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/Parent');
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     navigate('/Parent');
+  //   }
+  // }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +54,26 @@ const Login = () => {
     return true;
   };
 
+  const navigateByRole = (role) => {
+    switch (role) {
+      case 'PARENT':
+        navigate('/Parent');
+        break;
+      case 'ADMIN':
+        navigate('/Admin');
+        break;
+      case 'STUDENT':
+        navigate('/Student');
+        break;
+      case 'SCHOOL_NURSE':
+        navigate('/Nurse');
+        break;
+      default:
+        console.log('Invalid role:', role);
+        break;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -68,7 +88,10 @@ const Login = () => {
       const response = await LoginAPI(formData);
       
       if (response.isSuccess) {
-        navigate('/Parent');
+        localStorage.setItem('token', response.data.accessToken);
+        const userRole = response.data.user.role;
+        navigateByRole(userRole);
+        console.log('2', response.data.user);
       } else {
         // Show specific error message from backend
         setError(response.message || 'Login failed. Please check your credentials and try again.');

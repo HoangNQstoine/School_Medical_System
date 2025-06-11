@@ -7,7 +7,8 @@ import HealthRecords from './pages/Parent/HealthRecords';
 import Appointments from './pages/Parent/Appointments';
 import Messages from './pages/Parent/Messages';
 import Settings from './pages/Parent/Settings';
-import DeclareStudent from './pages/Parent/DeclareStudent';
+import Student from './pages/Student/student';
+import Nurse from './pages/Nurse/nurse';
 
 function App() {
   return (
@@ -20,11 +21,16 @@ function App() {
 
           {/* Parent Routes */}
           <Route path="/parent" element={<Parent />} />
-          <Route path="/parent/declare-student" element={<DeclareStudent />} />
           <Route path="/parent/health-records" element={<HealthRecords />} />
           <Route path="/parent/appointments" element={<Appointments />} />
           <Route path="/parent/messages" element={<Messages />} />
           <Route path="/parent/settings" element={<Settings />} />
+
+          {/* Student Routes */}
+          <Route path="/student" element={<Student />} />
+
+          {/* Nurse Routes */}
+          <Route path="/nurse" element={<Nurse />} />
 
           {/* Default Route */}
           <Route path="/" element={<Navigate to="/login" replace />} />
